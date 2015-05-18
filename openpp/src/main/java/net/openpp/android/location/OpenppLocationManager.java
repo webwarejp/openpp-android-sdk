@@ -138,7 +138,7 @@ public class OpenppLocationManager implements GoogleApiClient.ConnectionCallback
 
                 HashMap<String, String> bodyParam = new HashMap<>();
                 bodyParam.put(PARAM_LOCATION_LATITUDE, String.valueOf(location.getLatitude()));
-                bodyParam.put(PARAM_LOCATION_LONGITUDE, String.valueOf(location.getLatitude()));
+                bodyParam.put(PARAM_LOCATION_LONGITUDE, String.valueOf(location.getLongitude()));
                 try {
                     OpenppPushManager.getInstance().sendRegistrationRequest(bodyParam);
                 } catch (IOException e) {
