@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Android Open Source Project
+ * Copyright (C) 2015 webware,Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,13 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+/**
+ * @author shiroko@webware.co.jp
+ */
 public class OpenppPushIntentService extends IntentService {
     public static final int NOTIFICATION_ID = 1;
     public static final String DEFAULT_TITLE = "GCM Notification";
-    private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
+    NotificationCompat.Builder mBuilder;
 
     public OpenppPushIntentService() {
         super("OpenppPushIntentService");
@@ -82,14 +84,14 @@ public class OpenppPushIntentService extends IntentService {
      * @param extras
      */
     private void sendNotification(Bundle extras) {
-        mNotificationManager = (NotificationManager)
+        NotificationManager notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, OpenppPushManager.getInstance().getWakeupActivity()), 0);
 
         String title = extras.getString("title");
-        builder = new NotificationCompat.Builder(this)
+        mBuilder = new NotificationCompat.Builder(this)
                         .setSmallIcon( OpenppPushManager.getInstance().getIconResourceId())
                         .setContentTitle(title == null ? DEFAULT_TITLE : title)
                         .setStyle(new NotificationCompat.BigTextStyle()
@@ -97,7 +99,7 @@ public class OpenppPushIntentService extends IntentService {
                         .setContentText(extras.getString("message"))
                         .setAutoCancel(true);
 
-        builder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+        mBuilder.setContentIntent(contentIntent);
+        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 }
